@@ -11,7 +11,7 @@ import numpy as np
 # -------------------------
 
 column_tdv_multiperiod = [
-    'name','description','sector',
+    'name','description','sector','close'
     'market_cap_basic',
     'Perf.W','Perf.1M','Perf.3M','Perf.6M','Perf.Y'
 ]
@@ -71,7 +71,7 @@ df_filter = df_filter.sort_values('rs_rank', ascending=False)
 # -------------------------
 
 df_filter_final = df_filter[
-    ['name','description','sector','rs_rank','rs_category']
+    ['name','description','sector','close,'rs_rank','rs_category']
 ].reset_index(drop=True)
 
 # -------------------------
