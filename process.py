@@ -11,7 +11,7 @@ import numpy as np
 # -------------------------
 
 column_tdv_multiperiod = [
-    'name','description','sector','close'
+    'name','description','sector','close',
     'market_cap_basic',
     'Perf.W','Perf.1M','Perf.3M','Perf.6M','Perf.Y'
 ]
