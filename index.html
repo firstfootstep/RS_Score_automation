@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Stock Breakout</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    padding: 30px;
+    background-color: #f5f6fa;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+input, select {
+    padding: 6px;
+    margin-right: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th {
+    background-color: #2c3e50;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.count-box {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🚀 Stock Breakout</h1>
+<div class="subtitle">Data Updated: Q3 2026</div>
+
+<div class="controls">
+    <select id="rsFilter">
+        <option value="ALL">All RS</option>
+        <option value="RS Below 80">RS Below 80</option>
+        <option value="RS80-85">RS80-85</option>
+        <option value="RS85-90">RS85-90</option>
+        <option value="RS90-95">RS90-95</option>
+        <option value="RS95-100">RS95-100</option>
+    </select>
+
+    <input type="text" id="searchBox" placeholder="Search symbol...">
+</div>
+
+<div class="count-box">
+    Showing <span id="stockCount">0</span> stocks
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Symbol</th>
+            <th>Description</th>
+            <th>Sector</th>
+            <th>RS Rank</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+
+let stockData = [];
+let debounceTimer;
+
+fetch("rs_data.json")
+    .then(res => res.json())
+    .then(data => {
+        data.sort((a, b) => b.rs_rank - a.rs_rank);
+        stockData = data;
+        renderTable(data);
+    });
+
+function renderTable(data) {
+    const tbody = document.getElementById("tableBody");
+    document.getElementById("stockCount").innerText = data.length;
+
+    const rows = data.map(stock => `
+        <tr>
+            <td>${stock.name}</td>
+            <td>${stock.description}</td>
+            <td>${stock.sector}</td>
+            <td>${stock.rs_rank ? stock.rs_rank.toFixed(2) : ""}</td>
+        </tr>
+    `);
+
+    tbody.innerHTML = rows.join("");
+}
+
+function applyFilters() {
+    const rsValue = document.getElementById("rsFilter").value;
+    const searchValue = document.getElementById("searchBox").value.toUpperCase();
+
+    let filtered = stockData;
+
+    if (rsValue !== "ALL") {
+        filtered = filtered.filter(stock => stock.rs_category === rsValue);
+    }
+
+    if (searchValue !== "") {
+        filtered = filtered.filter(stock =>
+            stock.name.toUpperCase().includes(searchValue)
+        );
+    }
+
+    renderTable(filtered);
+}
+
+// Debounce search
+document.getElementById("searchBox").addEventListener("input", function() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(applyFilters, 200);
+});
+
+document.getElementById("rsFilter").addEventListener("change", applyFilters);
+
+</script>
+
+
+</body>
+</html>
