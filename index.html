@@ -84,6 +84,7 @@ tr:nth-child(even) {
             <th>Symbol</th>
             <th>Description</th>
             <th>Sector</th>
+            <th>Price</th>
             <th>RS Rank</th>
         </tr>
     </thead>
@@ -112,6 +113,7 @@ function renderTable(data) {
             <td>${stock.name}</td>
             <td>${stock.description}</td>
             <td>${stock.sector}</td>
+            <td>${stock.close ? Number(stock.close).toFixed(2) : "-"}</td>
             <td>${stock.rs_rank ? stock.rs_rank.toFixed(2) : ""}</td>
         </tr>
     `);
