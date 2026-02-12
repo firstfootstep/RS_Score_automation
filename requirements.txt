@@ -1,0 +1,3 @@
+pandas
+numpy
+tradingview_screener
