@@ -59,7 +59,10 @@ tr:nth-child(even) {
 <body>
 
 <h1>🚀 Stock Breakout</h1>
-<div class="subtitle">Data Updated: Q3 2026</div>
+<div class="subtitle">
+    Data Updated: <span id="updateDate">Loading...</span>
+</div>
+
 
 <div class="controls">
     <select id="rsFilter">
@@ -101,8 +104,15 @@ fetch("rs_data.json")
     .then(data => {
         data.sort((a, b) => b.rs_rank - a.rs_rank);
         stockData = data;
+
+        // ดึงวันที่จาก record แรก
+        if (data.length > 0) {
+            document.getElementById("updateDate").innerText = data[0].update_date;
+        }
+
         renderTable(data);
     });
+
 
 function renderTable(data) {
     const tbody = document.getElementById("tableBody");
