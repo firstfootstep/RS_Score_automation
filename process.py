@@ -74,6 +74,12 @@ df_filter_final = df_filter[
     ['name','description','sector','close','rs_rank','rs_category']
 ].reset_index(drop=True)
 
+from datetime import datetime
+
+update_date = datetime.now().strftime("%d %b %Y")
+df_filter_final["update_date"] = update_date
+
+
 # -------------------------
 # 6) Export JSON
 # -------------------------
